@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "nome": "Fortaleza",
+    "pais": "Brasil",
+    "atualizado": "2024-11-10T12:00:00Z",
+    "pontos": [
+      {
+        "nome": "Praia de Iracema",
+        "latitude": -3.717221,
+        "longitude": -38.511111
+      },
+      {
+        "nome": "Beach Park",
+        "latitude": -3.843611,
+        "longitude": -38.390833
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nome": "Florianópolis",
+    "pais": "Brasil",
+    "atualizado": "2024-11-10T12:00:00Z",
+    "pontos": [
+      {
+        "nome": "Praia da Joaquina",
+        "latitude": -27.628333,
+        "longitude": -48.451389
+      },
+      {
+        "nome": "Lagoa da Conceição",
+        "latitude": -27.593056,
+        "longitude": -48.504167
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nome": "Recife",
+    "pais": "Brasil",
+    "atualizado": "2024-11-10T12:00:00Z",
+    "pontos": [
+      {
+        "nome": "Praia de Boa Viagem",
+        "latitude": -8.115833,
+        "longitude": -34.905556
+      },
+      {
+        "nome": "Instituto Ricardo Brennand",
+        "latitude": -8.049722,
+        "longitude": -34.948333
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nome": "Porto Alegre",
+    "pais": "Brasil",
+    "atualizado": "2024-11-10T12:00:00Z",
+    "pontos": [
+      {
+        "nome": "Parque Farroupilha (Redenção)",
+        "latitude": -30.042500,
+        "longitude": -51.214722
+      },
+      {
+        "nome": "Fundação Iberê Camargo",
+        "latitude": -30.082778,
+        "longitude": -51.243056
+      }
+    ]
+  }
+]

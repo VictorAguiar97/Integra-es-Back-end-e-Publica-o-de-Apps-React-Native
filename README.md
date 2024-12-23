@@ -1,26 +1,41 @@
 # Victor Pereira Aguiar
 
-Desenvolvimento Front-end com React Native [24E4_2]
+Integrações Back-end e Publicação de Apps React Native [24E4_3]
 
 ## Prints do aplicativo
 
 Print Tela Login
 
-<img src="fotosapp/login.png" alt="Login" style="width:200px;heigth:200px">
+<img src="fotosapp/TELA_LOGIN.png" alt="Login" style="width:200px;heigth:200px">
 
-Print Tela Inicial
+Print Tela Inicial LIGHT
 
-<img src="fotosapp/Telainicial.png" alt="TelaInicial" style="width:200px;heigth:200px">
+<img src="fotosapp/TELA_INICIAL_LIGHT.png" alt="TelaInicial" style="width:200px;heigth:200px">
 
-Print Tela VisualizarCidades
+Print Tela Inicial DARK
 
-<img src="fotosapp/VisualizarCidades.png" alt="VisualizarCidades" style="width:200px;heigth:200px">
+<img src="fotosapp/TELA_INICIAL_DARK.png" alt="TelaInicial" style="width:200px;heigth:200px">
 
-Print Tela Formulario Cidade
+Print Tela FORMULARIO LIGHT
 
-<img src="fotosapp/FormularioCidade.png" alt="FormularioCidade" style="width:200px;heigth:200px">
+<img src="fotosapp/TELA_FORMULARIO_LIGHT.png" alt="TelaInicial" style="width:200px;heigth:200px">
 
-Print Tela Mapa
+Print Tela FORMULARIO DARK
 
-<img src="fotosapp/TelaMapa.png" alt="TelaMapa" style="width:200px;heigth:200px">
+<img src="fotosapp/TELA_FORMULARIO_DARK.png" alt="TelaInicial" style="width:200px;heigth:200px">
 
+Print Tela CONFIRMA FORMULARIO LIGHT
+
+<img src="fotosapp/TELA_CONFIRMA_FORMULARIO_LIGHT.png" alt="TelaInicial" style="width:200px;heigth:200px">
+
+Print Tela CONFIRMA FORMULARIO DARK
+
+<img src="fotosapp/TELA_CONFIRMA_FORMULARIO_DARK.png" alt="TelaInicial" style="width:200px;heigth:200px">
+
+Print Tela VISUALIZAR CIDADE LIGHT
+
+<img src="fotosapp/TELA_VISUALIZAR_CIDADE_LIGHT.png" alt="TelaInicial" style="width:200px;heigth:200px">
+
+Print Tela VISUALIZAR CIDADE DARK
+
+<img src="fotosapp/TELA_VISUALIZAR_CIDADE_DARK.png" alt="TelaInicial" style="width:200px;heigth:200px">

@@ -1,42 +1,103 @@
-import { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, useWindowDimensions, Pressable } from 'react-native';
-import Cidade from "@/models/Cidade";
-import CitiesList from '@/components/CitiesList';
-import CityInfo from '@/components/CityInfo';
-import { router } from 'expo-router';
-import { CitiesContext, CitiesContextState } from '@/context/CitiesContext';
+import { useContext, useEffect, useState } from "react";
+import { StyleSheet, View, useWindowDimensions, Pressable, SafeAreaView, NativeModules } from "react-native";
+import { router } from "expo-router";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { ActivityIndicator, Text } from "react-native-paper";
+import { UserContext } from "@/store/UserStore";
+import CitiesList from "@/components/CitiesList";
+import CityInfo from "@/components/CityInfo";
+import Cidade from "@/models/Cidade.tsx";
+import env from "@/constants/env.ts";
+import { styles } from "@/styles/Index.style";
 
 export default function PrivateScreen() {
-
-    // const [cidades, setCidades] = useState<Array<Cidade> | null>(null);
-    const { cities: cidades } = useContext(CitiesContext) as CitiesContextState;
+    const userAuth = useContext(UserContext);
+    const [cidades, setCidades] = useState<Array<Cidade> | null>(null);
     const [cidade, setCidade] = useState<Cidade | null>(null);
     const { width, height } = useWindowDimensions();
     const isPortrait = width < height;
+    const [isLoading, setLoading] = useState(false);
+    const [message, setMessage] = useState<String | null>(null);
+
+    const getCitiesApi = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch(env.API_GQL_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    query: `query {
+                        cidades {
+                          id
+                          nome
+                          pais
+                          atualizado
+                        }
+                      }`,
+                }),
+            });
+            const { data } = await response.json();
+            setCidades(data.cidades);
+        } catch (error) {
+            setMessage(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const Logout = () => {
+        const { DevSettings } = NativeModules;
+        DevSettings.reload();
+    };
+
+    useEffect(() => {
+        getCitiesApi();
+    }, []);
 
     const selecionarCidade = (cidade: Cidade) => {
-        if (isPortrait)
-            router.push(`/cidades/${cidade.id}`);
-        else
-            setCidade(cidade);
-    }
+        if (isPortrait) router.push(`/cidades/${cidade.id}`);
+        else setCidade(cidade);
+    };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.header}>
+                <Icon name="person" size={32} color="#fff" />
+                <Text style={styles.userName}>Olá, {userAuth?.email}</Text>
+                <Pressable style={styles.logoutButton} onPress={Logout}>
+                    <Icon name="logout" size={28} color="#fff" />
+                </Pressable>
+            </View>
+
             <View style={isPortrait ? styles.listContainerPortrait : styles.listContainerLandscape}>
                 <Text style={styles.title}>Cidades</Text>
-                <CitiesList cidades={cidades} onSelected={selecionarCidade} />
+
+                {isLoading && <ActivityIndicator size={100} />}
+
+                {message && <Text variant="titleSmall">{message}</Text>}
+
+                {!isLoading && cidades && (
+                    <CitiesList
+                        cidades={cidades}
+                        onSelected={selecionarCidade}
+                        refreshingAction={getCitiesApi}
+                    />
+                )}
 
                 <View style={styles.actionButtons}>
                     <Pressable
                         style={[styles.fab, styles.fabLocation]}
-                        onPress={() => router.push('/(private)/location')}>
+                        onPress={() => router.push("/(private)/location")}
+                    >
                         <Text style={styles.fabLabel}>Google Maps</Text>
                     </Pressable>
 
                     <Pressable
                         style={[styles.fab, styles.fabForm]}
-                        onPress={() => router.push('/(private)/formCity')}>
+                        onPress={() => router.push("/(private)/formCity")}
+                    >
                         <Text style={styles.fabLabel}>+ Cidade</Text>
                     </Pressable>
                 </View>
@@ -47,62 +108,6 @@ export default function PrivateScreen() {
                     <CityInfo cidade={cidade} />
                 </View>
             )}
-        </View>
+        </SafeAreaView>
     );
-};
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f4f4f6',
-        padding: 16,
-    },
-    listContainerPortrait: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    },
-    listContainerLandscape: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
-        color: '#333',
-    },
-    actionButtons: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: 20,
-    },
-    fab: {
-        width: 154,
-        height: 56,
-        borderRadius: 28,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 10,
-        elevation: 4,
-    },
-    fabLocation: {
-        backgroundColor: '#6200ea',
-    },
-    fabForm: {
-        backgroundColor: '#03dac5',
-    },
-    fabLabel: {
-        fontSize: 24,
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    cityInfoContainer: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#ffffff',
-        borderRadius: 8,
-        elevation: 4,
-    },
-});
+}

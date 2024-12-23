@@ -1,6 +1,5 @@
-import ItemList from '@/components/CitiesItemList';
 import { FlatList } from 'react-native';
-import Pontos from '@/models/Pontos';
+import Pontos from '../models/Pontos';
 import LocationsItemList from './LocationsItemList';
 
 export default function LocationsList(props: { pontos: Array<Pontos> | null }) {

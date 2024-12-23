@@ -1,15 +1,21 @@
 import { Picker } from "@react-native-picker/picker";
-import { useState } from "react";
-import { Pressable, StyleSheet, Switch, Text, TextInput, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Pressable, StyleSheet, Switch, Text, TextInput, View, Alert } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import env from '@/constants/env.ts';
+import { styles } from '@/styles/FormCity.Style.ts';
 
 export default function FormCityScreen() {
+
+  const { id } = useLocalSearchParams();
+
   const [inputNome, setInputNome] = useState("");
   const [inputPais, setInputPais] = useState("Brasil");
   const [inputData, setInputData] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [inputPassaporte, setInputPassaporte] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const listaPais = [
     { label: "Brasil", value: "BR" },
@@ -20,10 +26,43 @@ export default function FormCityScreen() {
     { label: "Itália", value: "IT" },
   ];
 
+  useEffect(() => {
+    const getCity = async () => {
+      if (id) {
+
+        setLoading(true);
+        try {
+          const response = await fetch(env.API_GQL_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `query {
+                        cidade(id: "${id}", nome: "") {
+                            id, nome, pais, atualizado
+                        }
+                    }`,
+            }),
+          });
+          const { data } = await response.json();
+          setInputNome(data.cidade.nome);
+          setInputPais(data.cidade.pais);
+        } catch (error) {
+          const err = error as { message: string };
+          Alert.alert(err.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+    getCity();
+  }, [id]);
+
   return (
     <View style={styles.formContainer}>
       <Text style={styles.header}>Formulário de Cidades</Text>
-      
+
       <TextInput
         style={styles.formTextInput}
         placeholder="Nome"
@@ -81,7 +120,7 @@ export default function FormCityScreen() {
         style={styles.formPressableSubmit}
         onPress={() => {
           router.push(
-            `/(private)/formCityConfirm?nome=${inputNome}&pais=${inputPais}&data=${inputData.toLocaleString(
+            `/(private)/formCityConfirm?id=${id}&nome=${inputNome}&pais=${inputPais}&data=${inputData.toLocaleString(
               "pt-BR"
             )}&passaporte=${inputPassaporte}`
           );
@@ -92,76 +131,3 @@ export default function FormCityScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  formContainer: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#f5f5f5",
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    color: "#333",
-  },
-  formTextInput: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#ccc",
-  },
-  formPickerContainer: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#555",
-    marginBottom: 8,
-  },
-  formPicker: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
-  },
-  formDateTimePicker: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#ccc",
-  },
-  dateText: {
-    fontSize: 16,
-    color: "#333",
-  },
-  switchContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  switchOption: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  formPressableSubmit: {
-    backgroundColor: "#4caf50",
-    borderRadius: 8,
-    padding: 16,
-    alignItems: "center",
-  },
-  formPressableSubmitLabel: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-});

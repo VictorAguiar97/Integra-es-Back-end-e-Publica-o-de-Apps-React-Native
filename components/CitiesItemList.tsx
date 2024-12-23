@@ -1,55 +1,71 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import Cidade from "@/models/Cidade";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { List, Divider, IconButton, useTheme } from "react-native-paper";
+import Cidade from "../models/Cidade.tsx";
 
 export default function CitiesItemList(props: {
-    item: Cidade | null,
-    onSelected: (cidade: Cidade) => void
+    item: Cidade | null;
+    onSelected: (cidade: Cidade) => void;
 }) {
     const { item, onSelected } = props;
-    const { nome, pais, atualizado } = item as Cidade;
+
+    if (!item) return null;
+
+    const { nome, pais, atualizado } = item;
     const atualizadoFormat = new Date(atualizado).toLocaleDateString("pt-BR");
+
+    const theme = useTheme();
+
     return (
-        <Pressable style={styles.itemListContainer} onPress={() => onSelected(item as Cidade)}>
-            <View style={styles.itemListHeader}>
-                <Text style={styles.itemListHeaderText}>{nome}</Text>
-                <Text style={styles.itemListHeaderText}>{pais}  </Text>
-            </View>
-            <View style={styles.itemListContent}>
-                <Text style={styles.itemListContentText}>{`${atualizadoFormat}`}</Text>
-            </View>
-        </Pressable>
-    )
+        <View style={styles.container}>
+            <List.Item
+                style={[styles.itemListContainer, { backgroundColor: theme.colors.background }]}
+                title={nome}
+                description={`${pais} | Atualizado: ${atualizadoFormat}`}
+                titleStyle={styles.title}
+                descriptionStyle={styles.description}
+                left={() => (
+                    <List.Icon
+                        icon="city"
+                        color={theme.colors.primary}
+                        style={styles.icon}
+                    />
+                )}
+                right={() => (
+                    <IconButton
+                        icon="arrow-right-bold-circle"
+                        iconColor={theme.colors.primary}
+                        size={28}
+                        onPress={() => onSelected(item)}
+                    />
+                )}
+            />
+            <Divider />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        width: "100%",
+    },
     itemListContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center', 
-        paddingVertical: 10, 
-        paddingHorizontal: 15, 
-        marginVertical: 5, 
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
-        backgroundColor: '#fff',
-        width: '100%',
-    },
-    itemListHeader: {
         flex: 1,
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderRadius: 8,
+        marginBottom: 8,
     },
-    itemListHeaderText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#333',
+    title: {
+        fontSize: 18,
+        fontWeight: "600",
+        color: "#333",
     },
-    itemListContent: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    itemListContentText: {
+    description: {
         fontSize: 14,
-        color: '#666',
+        color: "#666",
+    },
+    icon: {
+        margin: 0,
     },
 });

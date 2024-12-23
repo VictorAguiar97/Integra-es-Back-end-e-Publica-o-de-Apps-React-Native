@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import Cidade from "@/models/Cidade";
+import Cidade from "@/models/Cidade.tsx";
 import LocationsList from './LocationsList';
 
 export default function CityInfo(props: { cidade: Cidade }) {

@@ -1,7 +1,7 @@
 import Pontos from "./Pontos";
 
 export default interface Cidade {
-    id: number;
+    id: number | string;
     nome: string,
     pais: string,
     atualizado: Date,

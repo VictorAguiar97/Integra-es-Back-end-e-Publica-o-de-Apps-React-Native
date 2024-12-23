@@ -1,4 +1,4 @@
-import Cidade from "@/models/Cidade";
+import Cidade from "@/models/Cidade.tsx";
 import { ReactNode, createContext, useReducer, useState } from "react";
 
 export interface CitiesContextState {
@@ -13,7 +13,7 @@ export default function CitiesContextProvider(props: { children: ReactNode }) {
     const { children } = props;
     const [cities, dispatch] = useReducer(
         CitiesReducer,
-        require('@/assets/mock.json')
+        require('../assets/mock.json')
     );
 
     const [city, setCity] = useState<Cidade | null>(null);

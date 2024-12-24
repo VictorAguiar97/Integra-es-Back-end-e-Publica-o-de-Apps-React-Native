@@ -4,7 +4,7 @@ import { useContext, useState } from 'react';
 import { router } from 'expo-router';
 import { UserActionType, UserContext, UserDispatchContext } from '../store/UserStore.tsx';
 import env from '@/constants/env.ts';
-import { stylesLogin } from '../styles/Login.style.ts';
+import { stylesLogin } from '@/styles/Login.style';
 
 export default function LoginScreen() {
 

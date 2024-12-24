@@ -3,8 +3,8 @@ import { StyleSheet, View, ActivityIndicator, Alert } from 'react-native';
 import { Text, Card, Button, IconButton, Divider } from 'react-native-paper';
 import { useLocalSearchParams, useNavigation, router } from 'expo-router';
 import env from '@/constants/env.ts';
-import Cidade from '@/models/Cidade.tsx';
-import { styles } from '@/styles/Cidade.Style.ts';
+import Cidade from '@/models/Cidade';
+import { styles } from '@/styles/Cidade.Style';
 
 export default function CidadePage() {
     const { cidade: id } = useLocalSearchParams<{ cidade?: string }>();
